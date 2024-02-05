@@ -129,36 +129,6 @@ yarn build
     `getOrder` — получить заполенную форму заказа.
     
     ```tsx
-    interface IProduct {
-    	id: string;
-    	descridtion: string;
-    	image: string;
-    	title: string;
-    	category: string;
-    	price: number;
-    }
-    
-    type PaymentType = 'card' | 'cash';
-    
-    interface IOrder {
-    	payment: PaymentType;
-    	email: string;
-    	phone: string;
-    	address: string;
-    	total: number;
-    	items: string[];
-    }
-    
-    interface IProductItem extends IProduct {
-    	basketState: boolean;
-    }
-    
-    interface IAppSateData {
-    	products: IProductItem[];
-    	basket: string[];
-    	order: IOrder;
-    }
-    
     class IAppSate extends Model<IAppSateData> {}
     ```
     
@@ -182,10 +152,6 @@ yarn build
     `render` — перелпределяет родительский иетод, принимает объект с данными и возвращает готовый DOM-элемент с этими данными;
     
     ```tsx
-    interface IModalData {
-    	content: HTMLElement;
-    }
-    
     class Modal extends Component<IModalData> {}
     ```
     
@@ -210,10 +176,6 @@ yarn build
     `render` — принимает объект с данными и возвращает готовый DOM-элемент с этими данными.
     
     ```tsx
-    interface IFormState {
-    	errors: string[];
-    }
-    
     class Form<T> extends Component<IFormState> {}
     ```
     
@@ -243,11 +205,6 @@ yarn build
     `locked` — отвечает за блокировку прокрутки страницы, можно указать значения true или false.
     
     ```tsx
-    interface IPageData {
-    	counter: number;
-    	locked: boolean;
-    }
-    
     class Page extends Component<IPageData> {}
     ```
     
@@ -260,14 +217,6 @@ yarn build
     `items` — установить элементы галереи;
     
     ```tsx
-    interface IGalleryData {
-    	items: HTMLButtonElement[];
-    }
-    
-    interface IGalleryActions {
-    	onClick: (event: MouseEvent) => void;
-    }
-    
     class Gallery extends Component<IGalleryData> {}
     ```
     
@@ -288,19 +237,6 @@ yarn build
     `price` — установить значение стоимости товара;
     
     ```tsx
-    interface IProduct {
-    	id: string;
-    	descridtion: string;
-    	image: string;
-    	title: string;
-    	category: string;
-    	price: number;
-    }
-    
-    interface ICardAction {
-    	onClick: () => void;
-    }
-    
     class Card extends Component<IProduct> implements ICard {}
     ```
     
@@ -323,11 +259,6 @@ yarn build
     `total` — установить значение общей суммы покупки;
     
     ```tsx
-    interface IBasketData {
-    	items: HTMLElement[];
-    	total: number;
-    }
-    
     class Basket extends Component<IBasketData> {}
     ```
     
@@ -342,10 +273,6 @@ yarn build
     `validate` — переопределяет родительский метод валидации формы.
     
     ```tsx
-    interface IOrderForm {
-    	address: string;
-    }
-    
     class Order extends Form<IOrderForm> {}
     ```
     
@@ -360,11 +287,6 @@ yarn build
     `phone` — установить значение поля номера телефона;
     
     ```tsx
-    interface IContactsForm {
-    	email: string;
-    	phone: string;
-    }
-    
     class Contacts extends Form<IContactsForm> {}
     ```
     
@@ -377,14 +299,6 @@ yarn build
     `description` — устанавливает значение общей суммы заказа.
     
     ```tsx
-    interface ISuccessData {
-    	description: number;
-    }
-    
-    interface ISuccesssAction {
-    	onClick: () => void;
-    }
-    
     class Success extends Component<ISuccessData> {} 
     ```
     
