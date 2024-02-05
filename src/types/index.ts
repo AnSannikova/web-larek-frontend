@@ -4,7 +4,7 @@ export interface IProduct {
 	image: string;
 	title: string;
 	category: string;
-	price: number;
+	price: number | null;
 }
 
 export type PaymentType = 'card' | 'cash';
@@ -55,7 +55,7 @@ export interface IGalleryActions {
 }
 
 export interface ICardAction {
-	onClick: () => void;
+	onClick: (event: MouseEvent) => void;
 }
 
 export interface IBasketData {
