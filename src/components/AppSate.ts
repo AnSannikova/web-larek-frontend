@@ -8,19 +8,25 @@ import {
 } from '../types';
 import { Model } from './base/Model';
 
+export type GalleryChangeEvent = {
+	products: IProductItem[];
+};
+
 export class AppState extends Model<IAppSateData> {
-	protected products: IProductItem[];
-	protected basket: IProductItem[];
-	protected order: IOrder;
+	products: IProductItem[];
+	basket: IProductItem[];
+	order: IOrder;
 
 	setProduct(items: IProduct[]) {
 		this.products = items.map((item) => ({
 			...item,
 			basketState: false,
 		}));
+		this.emitChanges('gallery:changed', { products: this.products });
 	}
 
 	getProducts(): IProductItem[] {
+		this.emitChanges('gallery3');
 		return this.products;
 	}
 
