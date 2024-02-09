@@ -1,16 +1,14 @@
 export interface IProduct {
 	id: string;
-	descridtion: string;
+	description: string;
 	image: string;
 	title: string;
 	category: string;
 	price: number | null;
 }
 
-export type PaymentType = 'card' | 'cash';
-
 export interface IOrder {
-	payment: PaymentType;
+	payment: string;
 	email: string;
 	phone: string;
 	address: string;
@@ -29,6 +27,7 @@ export interface IModalData {
 
 export interface IFormState {
 	errors: string[];
+	valid: boolean;
 }
 
 export interface IProductItem extends IProduct {
@@ -43,19 +42,18 @@ export interface IAppSateData {
 
 export interface IPageData {
 	counter: number;
+	gallery: HTMLElement[];
 	locked: boolean;
 }
 
-export interface IGalleryData {
-	items: HTMLButtonElement[];
-}
-
-export interface IGalleryActions {
-	onClick: (event: MouseEvent) => void;
+export interface ICardData extends IProduct {
+	buttonLable: boolean;
+	index?: number;
 }
 
 export interface ICardAction {
-	onClick: (event: MouseEvent) => void;
+	onClickButton?: (event: MouseEvent) => void;
+	onClickCard?: () => void;
 }
 
 export interface IBasketData {
@@ -64,6 +62,7 @@ export interface IBasketData {
 }
 
 export interface IOrderForm {
+	payment: string;
 	address: string;
 }
 
@@ -71,6 +70,8 @@ export interface IContactsForm {
 	email: string;
 	phone: string;
 }
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 export interface ISuccessData {
 	description: number;

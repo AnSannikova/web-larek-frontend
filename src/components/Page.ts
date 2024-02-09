@@ -6,6 +6,7 @@ import { IEvents } from "./base/events";
 export class Page extends Component<IPageData> {
   protected _counter: HTMLSpanElement;
   protected _buttonBasket: HTMLButtonElement;
+  protected _gallery: HTMLElement;
   protected _wrapper: HTMLElement;
   protected _locked: boolean;
   protected events: IEvents;
@@ -16,6 +17,7 @@ export class Page extends Component<IPageData> {
     this.events = events;
     this._counter = ensureElement<HTMLSpanElement>('.header__basket-counter', container);
     this._buttonBasket = ensureElement<HTMLButtonElement>('.header__basket', container);
+    this._gallery = ensureElement<HTMLElement>('.gallery', container);
     this._wrapper = ensureElement<HTMLElement>('.page__wrapper', container);
 
     this._buttonBasket.addEventListener('click', () => {
@@ -25,6 +27,10 @@ export class Page extends Component<IPageData> {
 
   set counter(value:number) {
     this.setText(this._counter, value.toString());
+  }
+
+  set gallery(items: HTMLElement[]) {
+    this._gallery.replaceChildren(...items);
   }
 
   set locked(value: boolean) {

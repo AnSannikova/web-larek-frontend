@@ -3,19 +3,25 @@ import {
 	IProduct,
 	IProductItem,
 	IOrder,
+	//PaymentType,
+	FormErrors,
 	IOrderForm,
 	IContactsForm,
 } from '../types';
 import { Model } from './base/Model';
 
-export type GalleryChangeEvent = {
-	products: IProductItem[];
-};
-
 export class AppState extends Model<IAppSateData> {
-	products: IProductItem[];
-	basket: IProductItem[];
-	order: IOrder;
+	protected products: IProductItem[];
+	protected basket: IProductItem[];
+	protected order: IOrder = {
+		payment: '',
+		address: '',
+		email: '',
+		phone: '',
+		items: [],
+		total: 0
+	};
+	protected formErrors: FormErrors = {};
 
 	setProduct(items: IProduct[]) {
 		this.products = items.map((item) => ({
@@ -26,8 +32,19 @@ export class AppState extends Model<IAppSateData> {
 	}
 
 	getProducts(): IProductItem[] {
-		this.emitChanges('gallery3');
 		return this.products;
+	}
+
+	setPreviewCard(item: IProductItem) {
+		this.emitChanges('preview:changed', item);
+	}
+
+	addToBasket(item: IProductItem) {
+		this.products.find(product => item.id === product.id).basketState = true;
+	}
+
+	removeFromBasket(item: IProductItem) {
+		this.products.find(product => item.id === product.id).basketState = false;
 	}
 
 	getBasketItems(): IProductItem[] {
@@ -46,16 +63,39 @@ export class AppState extends Model<IAppSateData> {
 
 	clearBasket() {
 		this.basket.forEach((item) => {
-			item.basketState === false;
+			item.basketState = false;
 		});
+		
 	}
 
-	//переделать
-	setOrderField(field: keyof IOrderForm, value: string) {
+	setOrderField(field: keyof (IContactsForm & IOrderForm), value: string) {
 		this.order[field] = value;
+		this.validateOrder();
+	}
+
+	validateOrder() {
+		const errors: typeof this.formErrors = {};
+		if (!this.order.payment) {
+			errors.payment = 'Необходимо выбрать способ оплаты';
+		}
+		if (!this.order.address) {
+			errors.address = 'Необходимо указать адрес доставки';
+		}
+		if (!this.order.email) {
+			errors.email = 'Необходимо указать email';
+		}
+		if (!this.order.phone) {
+			errors.phone = 'Необходимо указать телефон';
+		}
+
+		this.formErrors = errors;
+		this.events.emit('formErrors:change', this.formErrors);
+		return Object.keys(errors).length === 0;
 	}
 
 	getOrder(): IOrder {
+		this.order.total = this.getTotal();
+		this.order.items = this.getBasketItems().map(item => item.id);
 		return this.order;
 	}
 }

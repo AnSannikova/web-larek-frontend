@@ -1,5 +1,5 @@
 import { IBasketData } from '../types';
-import { ensureElement, formatNumber } from '../utils/utils';
+import { createElement, ensureElement, formatNumber } from '../utils/utils';
 import { Component } from './base/Component';
 import { IEvents } from './base/events';
 
@@ -25,15 +25,23 @@ export class Basket extends Component<IBasketData> {
 				events.emit('order:open');
 			});
 		}
+
+		this.items = [];
 	}
 
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			this._basketList.replaceChildren(...items);
+			this.setDisabled(this._button, false);
+		} else {
+			this._basketList.replaceChildren(createElement<HTMLParagraphElement>('p', {
+				textContent: 'Корзина пуста'
+			}));
+			this.setDisabled(this._button, true);
 		}
 	}
 
 	set total(value: number) {
-		this.setText(this._total, formatNumber(value));
+		this.setText(this._total, formatNumber(value) + ' синапсов');
 	}
 }

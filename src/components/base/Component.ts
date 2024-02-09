@@ -27,14 +27,10 @@ export abstract class Component<T> {
     }
   }
 
-  protected setHidden(element: HTMLElement) {
+  setHidden(element: HTMLElement) {
     element.style.display = 'none';
   }
-
-  protected setVisible(element: HTMLElement) {
-    element.style.removeProperty('display');
-  }
-
+  
   render(data?: Partial<T>): HTMLElement {
     Object.assign(this as object, data ?? {});
     return this.container;

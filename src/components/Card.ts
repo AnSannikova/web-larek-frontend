@@ -1,9 +1,8 @@
-import { ICardAction, IProduct } from '../types';
+import { ICardAction, ICardData, IProduct } from '../types';
 import { ensureElement, formatNumber } from '../utils/utils';
 import { Component } from './base/Component';
 
-export class Card extends Component<IProduct> {
-	protected _id: string;
+export class Card extends Component<ICardData> {
 	protected _category?: HTMLSpanElement;
 	protected _title: HTMLElement;
 	protected _image?: HTMLImageElement;
@@ -14,29 +13,18 @@ export class Card extends Component<IProduct> {
 	constructor(container: HTMLElement, actions: ICardAction) {
 		super(container);
 
-		this._category = ensureElement<HTMLSpanElement>(
-			'.card__category',
-			container
-		);
+		this._category = container.querySelector('.card__category');
 		this._title = ensureElement<HTMLElement>('.card__title', container);
-		this._image = ensureElement<HTMLImageElement>('.card__image', container);
-		this._description = ensureElement<HTMLElement>('.card__text', container);
+		this._image = container.querySelector('.card__image');
+		this._description = container.querySelector('.card__text');
 		this._price = ensureElement<HTMLElement>('.card__price', container);
-		this._button = ensureElement<HTMLButtonElement>('.card__button', container);
+		this._button = container.querySelector('.card__button');
 
 		if (this._button) {
-			if (this._price.textContent === 'Бесценно') {
-				this.setHidden(this._button);
-			}
-
-			this._button.addEventListener('click', (event: MouseEvent) => {
-				actions.onClick(event);
-			});
+			this._button.addEventListener('click', actions.onClickButton);
 		}
-	}
 
-	set id(value: string) {
-		this._id = value;
+		this.container.addEventListener('click', actions.onClickCard)
 	}
 
 	set category(value: string) {
@@ -70,7 +58,7 @@ export class Card extends Component<IProduct> {
 	}
 
 	set image(value: string) {
-		this.setImage(this._image, value, this._title.textContent);
+		this.setImage(this._image, value);
 	}
 
 	set description(value: string) {
@@ -80,8 +68,18 @@ export class Card extends Component<IProduct> {
 	set price(value: number | null) {
 		if (value === null) {
 			this.setText(this._price, 'Бесценно');
+			if (this._button) this.setHidden(this._button);
+		} else {
+			this.setText(this._price, formatNumber(value) + ' синапсов');
 		}
-		this.setText(this._price, formatNumber(value));
+	}
+
+	set buttonLable(productState: boolean) {
+		if (productState) {
+			this._button.textContent = 'Удалить из корзины';
+		} else {
+			this._button.textContent = 'Купить';
+		}
 	}
 }
 
