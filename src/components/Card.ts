@@ -1,4 +1,4 @@
-import { ICardAction, ICardData, IProduct } from '../types';
+import { ICardAction, ICardData } from '../types';
 import { ensureElement, formatNumber } from '../utils/utils';
 import { Component } from './base/Component';
 
@@ -21,10 +21,10 @@ export class Card extends Component<ICardData> {
 		this._button = container.querySelector('.card__button');
 
 		if (this._button) {
-			this._button.addEventListener('click', actions.onClickButton);
+			this._button.addEventListener('click', actions.onClick);
+		} else {
+			this.container.addEventListener('click', actions.onClick);
 		}
-
-		this.container.addEventListener('click', actions.onClickCard)
 	}
 
 	set category(value: string) {
@@ -76,9 +76,9 @@ export class Card extends Component<ICardData> {
 
 	set buttonLable(productState: boolean) {
 		if (productState) {
-			this._button.textContent = 'Удалить из корзины';
+			this.setText(this._button, 'Удалить из корзины');
 		} else {
-			this._button.textContent = 'Купить';
+			this.setText(this._button, 'Купить');
 		}
 	}
 }

@@ -36,7 +36,7 @@ export interface IProductItem extends IProduct {
 
 export interface IAppSateData {
 	products: IProductItem[];
-	basket: string[];
+	basket: IProductItem[];
 	order: IOrder;
 }
 
@@ -52,8 +52,7 @@ export interface ICardData extends IProduct {
 }
 
 export interface ICardAction {
-	onClickButton?: (event: MouseEvent) => void;
-	onClickCard?: () => void;
+	onClick?: () => void;
 }
 
 export interface IBasketData {
